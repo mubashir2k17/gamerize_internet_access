@@ -54,7 +54,7 @@ function url_head_request(api_url) {
   var requestOptions = {
     method: 'HEAD'
   };
-  fetch(api_url, requestOptions).then(function (response) {
+  fetch(api_url).then(function (response) {
     api_urls[api_url] = "✅";
     update_UI();
   }).catch(function (error) {
