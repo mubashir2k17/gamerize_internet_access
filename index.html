@@ -26,11 +26,67 @@
   <!-- Add your site or application content here -->
   <script src="/modernizr-3.11.2.min.861109f8.js"></script>
   <script src="/plugins.0c1d9ccd.js"></script>
-  <script src="/main.5c656c7e.js"></script>
   <h1>Gamerize Internet Access Checklist</h1>
   <p>The Gamerize App requries some domains white listed to work properly.
     Here is a list of all the domains and a check if they are accessible.
   </p>
+
+  <script>var api_urls = {
+  "https://api.soapboxlabs.com/": null,
+  "https://config.uca.cloud.unity3d.com/": null,
+  "https://cdp.cloud.unity3d.com/": null,
+  "https://api.gamerize-dictionary.site/": null
+};
+
+function check_if_urls_is_accessible() {
+  for (var api_url in api_urls) {
+    url_head_request(api_url);
+  }
+}
+
+check_if_urls_is_accessible();
+
+function url_head_request(api_url) {
+  if (!api_url) {
+    return;
+  }
+
+  var requestOptions = {
+    method: 'HEAD'
+  };
+  fetch(api_url, requestOptions).then(function (response) {
+    api_urls[api_url] = "✅";
+    update_UI();
+  }).catch(function (error) {
+    if (error > 200 && error < 499) {
+      api_urls[api_url] = "✅";
+      update_UI();
+    } else {
+      api_urls[api_url] = "❌";
+      update_UI();
+    }
+  });
+}
+
+function update_UI() {
+  var table = document.getElementById("URL");
+  table.innerHTML = '';
+  var header = table.createTHead();
+  var row = header.insertRow();
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  cell1.innerHTML = "Urls";
+  cell2.innerHTML = "Is accessible";
+
+  for (var api_url in api_urls) {
+    var row = table.insertRow();
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.innerHTML = api_url;
+    cell2.innerHTML = api_urls[api_url];
+    console.log(api_urls[api_url]);
+  }
+}</script>
 
   <table id="URL">
   </table>
